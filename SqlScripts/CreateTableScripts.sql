@@ -15,7 +15,7 @@ CREATE TABLE users (
     updatedat timestamp
 );
 
-CREATE TABLE league (
+CREATE TABLE leagues (
     id integer,
     name varchar,
     minamount bigint,
@@ -25,7 +25,7 @@ CREATE TABLE league (
     updatedat timestamp
 );
 
-CREATE TABLE attachment (
+CREATE TABLE attachments (
     id integer,
     filename varchar,
     filepath varchar,
@@ -33,7 +33,7 @@ CREATE TABLE attachment (
     updatedat timestamp
 );
 
-CREATE TABLE balancehistory (
+CREATE TABLE balancehistories (
     id integer,
     userid integer,
     earnamount bigint,
@@ -41,14 +41,14 @@ CREATE TABLE balancehistory (
     updatedat timestamp
 );
 
-CREATE TABLE miner (
+CREATE TABLE miners (
     id integer,
     amount bigint,
     createdat timestamp,
     updatedat timestamp
 );
 
-CREATE TABLE mission (
+CREATE TABLE missions (
     id integer,
     name varchar,
     description varchar,
@@ -58,7 +58,7 @@ CREATE TABLE mission (
     updatedat timestamp
 );
 
-CREATE TABLE missionuser (
+CREATE TABLE missionsusers (
     id integer,
     missionid integer,
     userid integer,
@@ -67,7 +67,7 @@ CREATE TABLE missionuser (
     updatedat timestamp
 );
 
-CREATE TABLE roadmap (
+CREATE TABLE roadmaps (
     id integer,
     step varchar,
     isdone boolean,
@@ -75,7 +75,7 @@ CREATE TABLE roadmap (
     updatedat timestamp
 );
 
-CREATE TABLE wheel (
+CREATE TABLE wheels (
     id integer,
     imageid integer,
     name varchar,
