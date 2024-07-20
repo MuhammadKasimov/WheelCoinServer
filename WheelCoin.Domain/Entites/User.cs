@@ -14,5 +14,6 @@ public class User : Auditable
     public League League { get; set; }  
     public Wheel Wheel { get; set; }
     public string RefereeCode { get; set; }
-    public TaskUser TaskUser { get; set; }
+    public MissionUser MissionUser { get; set; }
+    public string WalletAddress { get; set; }
 }

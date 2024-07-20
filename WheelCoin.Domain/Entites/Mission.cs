@@ -2,10 +2,10 @@ using WheelCoin.Domain.Commons;
 
 namespace WheelCoin.Domain.Entites;
 
-public class Task : Auditable
+public class Mission : Auditable
 {
     public string Name { get; set; }
     public string Description { get; set; }
     public string Url { get; set; }
-    public TaskUser TaskUser { get; set; }
+    public MissionUser MissionUser { get; set; }
 }
