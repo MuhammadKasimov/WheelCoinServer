@@ -11,7 +11,7 @@ public class BalanceHistoryRepository(string connectioString) : IBalanceHistoryR
     {
         using (var connection = new NpgsqlConnection(connectioString))
         {
-            using (var command = new NpgsqlCommand("SELECT * FROM balancehistory WHERE id = @id;",connection))
+            using (var command = new NpgsqlCommand("SELECT * FROM balancehistory WHERE id = @id;", connection))
             {
                 command.Parameters.AddWithValue("id",NpgsqlDbType.Integer, id); 
                 var reader = await command.ExecuteReaderAsync();

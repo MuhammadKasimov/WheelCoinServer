@@ -4,8 +4,6 @@ namespace WheelCoin.Data.IRepositories;
 
 public interface IMissionUserRepository
 {
-    Task<MissionUser> GetAsync(int id);
-    Task<IEnumerable<MissionUser>> GetAllAsync();
-    Task CreateAsync(MissionUser league);
-    Task DeleteAsync(int id);
+    Task<IEnumerable<MissionUser>> GetAllAsync(int userId);
+    Task CreateAsync(MissionUser missionUser);
 }

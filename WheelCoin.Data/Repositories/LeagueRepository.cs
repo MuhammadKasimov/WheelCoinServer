@@ -59,7 +59,7 @@ public class LeagueRepository(string connectionString) : ILeagueRepository
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
-            using (var command = new NpgsqlCommand("INSERT INTO attachments (filename, filepath) VALUES (@filename, @filepath);"))
+            using (var command = new NpgsqlCommand("INSERT INTO attachments (filename, filepath) VALUES (@filename, @filepath);", connection))
             {
                 command.Parameters.AddWithValue("filename", NpgsqlDbType.Varchar, league.Icon.FileName);
                 command.Parameters.AddWithValue("filepath", NpgsqlDbType.Varchar, league.Icon.FilePath);

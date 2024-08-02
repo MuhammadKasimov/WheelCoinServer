@@ -34,7 +34,7 @@ public class AttachmentRepository(string connectionString) : IAttachmentReposito
         using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
         {
             using (NpgsqlCommand command = new NpgsqlCommand(
-                       "INSERT INTO attachments (filename, filepath) VALUES (@filename, @filepath)",connection))
+                       "INSERT INTO attachments (filename, filepath) VALUES (@filename, @filepath)", connection))
             {
                 command.Parameters.AddWithValue("filename", NpgsqlDbType.Integer, attachment.FileName);
                 command.Parameters.AddWithValue("filename", NpgsqlDbType.Integer, attachment.FilePath);

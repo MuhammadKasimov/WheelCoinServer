@@ -1,27 +1,65 @@
+using Npgsql;
+using NpgsqlTypes;
 using WheelCoin.Data.IRepositories;
 using WheelCoin.Domain.Entites;
 
 namespace WheelCoin.Data.Repositories;
 
-public class MissionUserRepository : IMissionUserRepository
+public class MissionUserRepository(string connectionString) : IMissionUserRepository
 {
-    public async Task<MissionUser> GetAsync(int id)
+    public async Task<IEnumerable<MissionUser>> GetAllAsync(int userId)
     {
-        throw new NotImplementedException();
+        var missionsUsers = new List<MissionUser>();
+        using(var connection = new NpgsqlConnection(connectionString))
+        {
+            using (var command = new NpgsqlCommand("SELECT mu.*, m.name, m.description,m.reward m.url FROM missionsusers AS mu JOIN missions AS m ON mu.missionid = m.id WHERE userid = @userid;")) 
+            {
+                command.Parameters.AddWithValue("userid", NpgsqlDbType.Integer ,userId);
+                var reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync()) 
+                {
+                    missionsUsers.Add(MapMissionUser(reader));
+                }
+            }
+        }
+        return missionsUsers;
     }
 
-    public async Task<IEnumerable<MissionUser>> GetAllAsync()
+    public async Task CreateAsync(MissionUser missionUser)
     {
-        throw new NotImplementedException();
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            using (var command = new NpgsqlCommand("INSERT INTO missionsusers (missionid, userid, isdone) VALUES (@missionid,@userid,@isdone);", connection))
+            {
+                command.Parameters.AddWithValue("missionid",NpgsqlDbType.Integer, missionUser.MissionId);
+                command.Parameters.AddWithValue("userid",NpgsqlDbType.Integer, missionUser.UserId);
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
     }
 
-    public async Task CreateAsync(MissionUser league)
+    private MissionUser MapMissionUser(NpgsqlDataReader reader)
     {
-        throw new NotImplementedException();
+        return new MissionUser
+        {
+            Id = reader.GetInt32(reader.GetOrdinal("id")),
+            IsDone = reader.GetBoolean(reader.GetOrdinal("isdone")),
+            Mission = MapToMission(reader),
+            CreatedAt = reader.GetDateTime(reader.GetOrdinal("createdat")),
+            UpdatedAt = reader.GetDateTime(reader.GetOrdinal("updatedat"))       
+        };
     }
-
-    public async Task DeleteAsync(int id)
+    private Mission MapToMission(NpgsqlDataReader reader)
     {
-        throw new NotImplementedException();
+        return new Mission
+        {
+            Id = reader.GetInt32(reader.GetOrdinal("missionid")),
+            Description = reader.GetString(reader.GetOrdinal("description")),
+            Name = reader.GetString(reader.GetOrdinal("name")),
+            Reward = reader.GetInt64(reader.GetOrdinal("ordinal")),
+            Url = reader.GetString(reader.GetOrdinal("url"))
+        };
     }
 }
