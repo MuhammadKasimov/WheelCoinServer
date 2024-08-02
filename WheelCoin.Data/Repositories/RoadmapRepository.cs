@@ -12,7 +12,7 @@ public class RoadmapRepository(string connectionString) : IRoadmapRepository
         var roadmaps = new List<Roadmap>();
         using (var connection = new NpgsqlConnection(connectionString))
         {
-            using (var command = new NpgsqlCommand("SELECT * FROM roadmaps;"))
+            using (var command = new NpgsqlCommand("SELECT * FROM roadmaps;",connection))
             {
                 var reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync()) 
@@ -29,7 +29,7 @@ public class RoadmapRepository(string connectionString) : IRoadmapRepository
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
-            using (var command = new NpgsqlCommand("INSERT INTO roadmaps(step, isdone) VALUES (@step, @isdone)"))
+            using (var command = new NpgsqlCommand("INSERT INTO roadmaps(step, isdone) VALUES (@step, @isdone)", connection))
             {
                 command.Parameters.AddWithValue("step", NpgsqlDbType.Varchar, league.Step);
                 command.Parameters.AddWithValue("isdone", NpgsqlDbType.Boolean, league.IsDone);
@@ -42,7 +42,7 @@ public class RoadmapRepository(string connectionString) : IRoadmapRepository
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
-            using (var command = new NpgsqlCommand("UPDATE roadmaps SET step = @step, isdone = @isdone WHERE id = @id;"))
+            using (var command = new NpgsqlCommand("UPDATE roadmaps SET step = @step, isdone = @isdone WHERE id = @id;", connection))
             {
                 command.Parameters.AddWithValue("id", NpgsqlDbType.Varchar, id);
                 command.Parameters.AddWithValue("step", NpgsqlDbType.Varchar, league.Step);
@@ -56,7 +56,7 @@ public class RoadmapRepository(string connectionString) : IRoadmapRepository
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
-            using (var command = new NpgsqlCommand("DELETE FROM roadmaps WHERE id = @id;"))
+            using (var command = new NpgsqlCommand("DELETE FROM roadmaps WHERE id = @id;", connection))
             {
                 command.Parameters.AddWithValue("id", NpgsqlDbType.Varchar, id);
    

@@ -12,7 +12,7 @@ public class MissionUserRepository(string connectionString) : IMissionUserReposi
         var missionsUsers = new List<MissionUser>();
         using(var connection = new NpgsqlConnection(connectionString))
         {
-            using (var command = new NpgsqlCommand("SELECT mu.*, m.name, m.description,m.reward m.url FROM missionsusers AS mu JOIN missions AS m ON mu.missionid = m.id WHERE userid = @userid;")) 
+            using (var command = new NpgsqlCommand("SELECT mu.*, m.name, m.description,m.reward m.url FROM missionsusers AS mu JOIN missions AS m ON mu.missionid = m.id WHERE userid = @userid;", connection)) 
             {
                 command.Parameters.AddWithValue("userid", NpgsqlDbType.Integer ,userId);
                 var reader = await command.ExecuteReaderAsync();

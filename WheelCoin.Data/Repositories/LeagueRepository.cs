@@ -92,13 +92,17 @@ public class LeagueRepository(string connectionString) : ILeagueRepository
     }
 
     public async Task DeleteAsync(int id)
-    {using (var connection = new NpgsqlConnection(connectionString))
     {
-        using (var command = new NpgsqlCommand("DELETE FROM leagues WHERE id = @id;", connection))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
-            command.Parameters.AddWithValue("id", NpgsqlDbType.Integer, id);
+            using (var command = new NpgsqlCommand("DELETE FROM leagues WHERE id = @id;", connection))
+            {
+                command.Parameters.AddWithValue("id", NpgsqlDbType.Integer, id);
+
+                await command.ExecuteNonQueryAsync();
+            }
         }
-    }}
+    }
 
     private League MapReaderToLeague(NpgsqlDataReader reader)
     {
@@ -116,7 +120,7 @@ public class LeagueRepository(string connectionString) : ILeagueRepository
     {
         return new Attachment()
         {
-            Id = reader.GetInt32(reader.GetOrdinal("id")),
+            Id = reader.GetInt32(reader.GetOrdinal("attachmentid")),
             FileName = reader.GetString(reader.GetOrdinal("filename")),
             FilePath = reader.GetString(reader.GetOrdinal("filepath")),
             CreatedAt = reader.GetDateTime(reader.GetOrdinal("createdat")),
